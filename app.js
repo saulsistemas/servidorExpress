@@ -7,6 +7,8 @@ let clientes =[
     {nombre:'carlos', ruc:'1234456', direccion:'mz klt31', localidad:'sjdl'},
     {nombre:'miguel', ruc:'1243456', direccion:'mz klt51', localidad:'ate'},
 ]
+app.use(express.json()) //MIDELWARE PARSEA A JSON
+app.use(express.urlencoded({extended:true})) //MIDELWARE PARSEA A JSON
 //INICIANDO SERVIDOR
 app.listen(port,function(){
     console.log('servidor escuchado');
@@ -26,6 +28,20 @@ app.get('/:ruc',function(request,response){
         cliente:cliente,
     })
 })
+
+//PETICIONES POST
+app.post('/',function(request,response){
+    if (request.body ===undefined) {
+        return response.status(400).json({
+            mensaje:"datos de cliente obiligatorio"
+        })
+    }
+    clientes.push(request.body);
+    response.status(201).json({
+        mensaje:'el cliente ha sido registrado correctamente',
+    });
+    console.log(clientes);
+});
 app.get('/',function(req,res){
     res.status(200).send(clientes);
 })

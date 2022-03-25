@@ -11,6 +11,21 @@ let clientes =[
 app.listen(port,function(){
     console.log('servidor escuchado');
 })
+//RUTA CON PARAMETROS MEDIANTE VERBO GET
+app.get('/:ruc',function(request,response){
+    console.log(request.params.ruc);
+    let cliente = clientes.find(elem =>{
+        return elem.ruc === request.params.ruc;
+    })
+    if (cliente===undefined) {
+        return response.status(404).json({
+            mensaje:'no se encontro registro'
+        })
+    }
+    response.status(200).json({
+        cliente:cliente,
+    })
+})
 app.get('/',function(req,res){
     res.status(200).send(clientes);
 })

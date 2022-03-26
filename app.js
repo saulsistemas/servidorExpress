@@ -82,3 +82,27 @@ app.put('/:ruc',function(request,response){
     })
     console.log(clientes);
 })
+
+app.delete('/:ruc',function(request,response){
+    //PARAMS POR LA URL
+    //BODY POR LAS CAJAS
+    if (request.params.ruc ===undefined) {
+        return response.status(400).json({
+            mensaje:"el ruc del cliente a actualizar es obligatorio"
+        })
+    }
+    const posicion = clientes.findIndex(elem =>{
+        return elem.ruc === request.params.ruc;
+        
+    })
+    if (posicion <0) {
+        return response.status(404).json({
+            mensaje:"cliente no encontrado"
+        })
+    }
+    clientes.splice(posicion,1);
+    response.status(200).json({
+        mensaje:'cliente ha sido eliminado correctametne'
+    })
+    console.log(clientes);
+})

@@ -46,3 +46,39 @@ app.get('/',function(req,res){
     res.status(200).send(clientes);
 })
 
+app.put('/:ruc',function(request,response){
+    if (request.body ===undefined) {
+        return response.status(400).json({
+            mensaje:"datos de cliente a actualizar obiligatorio"
+        })
+    }
+    if (request.params.ruc ===undefined) {
+        return response.status(400).json({
+            mensaje:"el ruc del cliente a actualizar es obligatorio"
+        })
+    }
+    const posicion = clientes.findIndex(elem =>{
+        return elem.ruc === request.params.ruc;
+        
+    })
+    console.log(posicion);
+    if (posicion <0) {
+        return response.status(404).json({
+            mensaje:"cliente no encontrado"
+        })
+    }
+    if (request.body.nombre !== undefined) {
+        clientes[posicion].nombre = request.body.nombre;
+    }
+    if (request.body.direccion !== undefined) {
+        clientes[posicion].direccion = request.body.direccion;
+    }
+    if (request.body.localidad !== undefined) {
+        clientes[posicion].localidad = request.body.localidad;
+    }
+
+    response.status(201).json({
+        mensaje:'El cliente ha sido actualizado correctamente',
+    })
+    console.log(clientes);
+})
